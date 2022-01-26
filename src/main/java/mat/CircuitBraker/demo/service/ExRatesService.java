@@ -2,8 +2,11 @@ package mat.CircuitBraker.demo.service;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import mat.CircuitBraker.demo.entity.ExRates;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -15,11 +18,11 @@ public class ExRatesService {
 
     RestTemplate restTemplate = new RestTemplate();
 
-//    final static String baseUrl = "http://api.exchangeratesapi.io/v1/latest?access_key=4e841514a5efeadd79726805c2bf1430";
-    final static String baseUrl = "";
+        final static String baseUrl = "http://api.exchangeratesapi.io/v1/latest?access_key=4e841514a5efeadd79726805c2bf1430";
+//    final static String baseUrl = "";
 
 
-    //    @Cacheable(value = "exRates")
+    @Cacheable(value = "exRates")
     @HystrixCommand(fallbackMethod = "pingFallback")
     public ExRates getExRates() {
         URI uri = null;
@@ -36,8 +39,8 @@ public class ExRatesService {
 
     }
 
-    //    @Scheduled(cron = "0 0/30 * * * ?")
-//    @CacheEvict(value = "exRates")
+    @Scheduled(cron = "0 0 * ? * * *")
+    @CacheEvict(value = "exRates")
     public void clearAppsCache() {
     }
 
