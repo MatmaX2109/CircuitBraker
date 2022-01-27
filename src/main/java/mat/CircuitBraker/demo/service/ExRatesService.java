@@ -1,7 +1,9 @@
 package mat.CircuitBraker.demo.service;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import mat.CircuitBraker.demo.entity.ExRates;
+import mat.CircuitBraker.demo.exceptions.ServiceDownException;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpMethod;
@@ -22,8 +24,11 @@ public class ExRatesService {
 //    final static String baseUrl = "";
 
 
-    @Cacheable(value = "exRates")
-    @HystrixCommand(fallbackMethod = "pingFallback")
+    @Cacheable(value = "exRates", unless="#result == null")
+    @HystrixCommand(fallbackMethod = "pingFallback", commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "10000"),
+            @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "50"),
+            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "10") })
     public ExRates getExRates() {
         URI uri = null;
         try {
@@ -35,7 +40,7 @@ public class ExRatesService {
         return responseEntity.getBody();
     }
     private ExRates pingFallback() {
-        return null ;
+        throw new ServiceDownException("Service is down for the moment");
 
     }
 

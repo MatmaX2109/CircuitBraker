@@ -27,7 +27,7 @@ public class AccountController extends BaseRestController {
             summary = "Save an account",
             responses = {
                     @ApiResponse(responseCode = "201", description = "Saved"),
-                    @ApiResponse(responseCode = "403", description = "de pus msg")
+                    @ApiResponse(responseCode = "400", description = "Bad Request")
             }
     )
     public ResponseEntity<AccountResponse> save(@RequestBody AccountRequest account) {
@@ -39,10 +39,22 @@ public class AccountController extends BaseRestController {
             summary = "Get an account",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Get OK"),
-                    @ApiResponse(responseCode = "404", description = "de pus msg")
+                    @ApiResponse(responseCode = "404", description = "Not Found")
             }
     )
     public ResponseEntity<AccountResponse> findAccount(@PathVariable Long id) {
         return ResponseEntity.ok(accountService.findById(id));
+    }
+
+    @GetMapping("/EUR/{id}")
+    @Operation(
+            summary = "Get an account converted in EUR",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Get OK"),
+                    @ApiResponse(responseCode = "404", description = "Not Found")
+            }
+    )
+    public ResponseEntity<AccountResponse> findAccountEuro(@PathVariable Long id) {
+        return ResponseEntity.ok(accountService.findByIdInEuro(id));
     }
 }

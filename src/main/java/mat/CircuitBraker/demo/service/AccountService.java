@@ -3,13 +3,17 @@ package mat.CircuitBraker.demo.service;
 import lombok.RequiredArgsConstructor;
 import mat.CircuitBraker.demo.DTO.AccountRequest;
 import mat.CircuitBraker.demo.DTO.AccountResponse;
+import mat.CircuitBraker.demo.entity.Account;
 import mat.CircuitBraker.demo.entity.ExRates;
+import mat.CircuitBraker.demo.exceptions.ServiceDownException;
 import mat.CircuitBraker.demo.mapper.AccountMapper;
 import mat.CircuitBraker.demo.repository.AccountRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.persistence.EntityNotFoundException;
+import java.math.BigDecimal;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,15 +28,29 @@ public class AccountService {
         return accountMapper.map(accountRepository.save(accountMapper.map(account)));
     }
 
-    public AccountResponse findById(final Long id){
+    public AccountResponse findByIdInEuro(final Long id){
 
-        ExRates test = exRatesService.getExRates();
-        System.out.println(test);
-        return accountRepository.findById(id).map(accountMapper::map).orElseThrow(() -> {
-            throw new EntityNotFoundException("Account not found.");
-        });
+        AccountResponse accountResponse = findById(id);
+
+        ExRates exRates = exRatesService.getExRates();
+        if(exRates == null){
+            throw new ServiceDownException("No rates available");
+        }
+
+        BigDecimal multiply = exRates.getRates().get(accountResponse.getCurrency());
+        accountResponse.setBalance(accountResponse.getBalance().multiply(multiply));
+        accountResponse.setCurrency(exRates.getBase());
+
+        return accountResponse;
     }
 
 
+    public AccountResponse findById(final Long id) {
+
+        return accountRepository.findById(id).map(accountMapper::map).orElseThrow(() -> {
+            throw new EntityNotFoundException("Account requested not found.");
+        });
+
+    }
 
 }
