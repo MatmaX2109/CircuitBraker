@@ -2,7 +2,7 @@ package mat.CircuitBraker.demo.service;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
-import mat.CircuitBraker.demo.entity.ExRates;
+import mat.CircuitBraker.demo.DTO.ExRates;
 import mat.CircuitBraker.demo.exceptions.ServiceDownException;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;

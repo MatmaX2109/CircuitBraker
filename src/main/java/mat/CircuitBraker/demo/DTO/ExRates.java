@@ -1,4 +1,4 @@
-package mat.CircuitBraker.demo.entity;
+package mat.CircuitBraker.demo.DTO;
 
 
 import lombok.*;

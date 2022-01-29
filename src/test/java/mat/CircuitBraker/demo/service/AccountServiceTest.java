@@ -2,20 +2,17 @@ package mat.CircuitBraker.demo.service;
 
 import mat.CircuitBraker.demo.DTO.AccountResponse;
 import mat.CircuitBraker.demo.entity.Account;
-import mat.CircuitBraker.demo.entity.ExRates;
+import mat.CircuitBraker.demo.DTO.ExRates;
 import mat.CircuitBraker.demo.exceptions.ServiceDownException;
 import mat.CircuitBraker.demo.mapper.AccountMapper;
 import mat.CircuitBraker.demo.repository.AccountRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
@@ -25,8 +22,6 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
-//@SpringBootTest
-//@RunWith(MockitoJUnitRunner.class)
 @ExtendWith(MockitoExtension.class)
 public class AccountServiceTest {
 

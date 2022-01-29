@@ -1,11 +1,13 @@
 package mat.CircuitBraker.demo.DTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.math.BigDecimal;
 
 @Getter
+@Builder
 public class AccountRequest {
 
     @Schema(name = "iban", type = "String", description = "IBAN", required = true, example = "ROXXXXXXXX")

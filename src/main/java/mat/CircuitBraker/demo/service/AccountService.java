@@ -3,17 +3,14 @@ package mat.CircuitBraker.demo.service;
 import lombok.RequiredArgsConstructor;
 import mat.CircuitBraker.demo.DTO.AccountRequest;
 import mat.CircuitBraker.demo.DTO.AccountResponse;
-import mat.CircuitBraker.demo.entity.Account;
-import mat.CircuitBraker.demo.entity.ExRates;
+import mat.CircuitBraker.demo.DTO.ExRates;
 import mat.CircuitBraker.demo.exceptions.ServiceDownException;
 import mat.CircuitBraker.demo.mapper.AccountMapper;
 import mat.CircuitBraker.demo.repository.AccountRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
